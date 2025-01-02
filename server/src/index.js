@@ -13,7 +13,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 connect.connectDB();
 router(app);
-  
+app.get('/', (req, res) => {
+    res.send('Server is running on port 7021');
+})
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })

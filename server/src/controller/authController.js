@@ -32,6 +32,11 @@ class AuthController{
             });
         }
     }
+    async Login(req, res){
+        res.status(200).json({
+            message: "hello"
+        })
+    }
 }   
 
 module.exports = new AuthController;
