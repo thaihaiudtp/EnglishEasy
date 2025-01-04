@@ -23,15 +23,38 @@ const userSchema = new Schema({
         type: Number,
         default: 0,
     },
-    point: [{
+   tests: [{
         test: {
             type: Schema.Types.ObjectId,
             ref: 'Test',
         },
+        total_questions: {
+            type: Number, 
+            default: 0,
+        },
+        correct_answers: {
+            type: Number, // Số câu trả lời đúng
+            default: 0,
+        },
+        start_time: {
+            type: Date,
+        },
+        end_time: {
+            type: Date,
+        },        
+        isBlock: {
+            type: Boolean,
+            default: false,
+        },
         score: {
             type: Number,
             default: 0,
-        }
+        },
+        status: {
+            type: String,
+            enum: ['in-progress', 'completed', 'abandoned'], 
+            default: 'in-progress',
+        },
     }],
 }, {
     timestamps: true,

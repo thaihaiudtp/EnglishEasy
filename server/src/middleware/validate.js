@@ -14,4 +14,11 @@ const registerValidation = [
         .isNumeric().withMessage('Class must be a number')
         .isLength({ max: 3 }).withMessage('Class must not exceed 3 digits'),
 ];
-module.exports = {registerValidation};
+const loginValidation = [
+    body('email')
+        .isEmail().withMessage('Invalid email format'),
+    body('password')
+        .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+        .matches(/^[a-zA-Z0-9]+$/).withMessage('Password must not contain special characters'),
+];
+module.exports = {registerValidation, loginValidation};
