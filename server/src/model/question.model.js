@@ -30,6 +30,10 @@ const questionSchema = new Schema({
         type: String,
         required: true,
         enum: ['A', 'B', 'C', 'D'],
+    },
+    createBy: {
+        type: String,
+        required: true
     }
 }, {
     timestamps: true,

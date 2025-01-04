@@ -4,6 +4,8 @@ const port = 7021;
 const connect = require('./db');
 const router = require('./routes/index');
 const cors = require('cors');
+const dotenv = require('dotenv');
+dotenv.config();
 app.use(cors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
