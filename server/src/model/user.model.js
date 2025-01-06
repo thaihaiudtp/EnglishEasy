@@ -32,28 +32,29 @@ const userSchema = new Schema({
             type: Number, 
             default: 0,
         },
-        correct_answers: {
-            type: Number, // Số câu trả lời đúng
+        total_correct_answers: {
+            type: Number, 
             default: 0,
         },
+        answered_questions: [{
+            question: {
+                type: Schema.Types.ObjectId,
+                ref: 'Question',
+            },
+            total: {
+                type: Number,
+                default: 0,
+            }
+        }],
         start_time: {
             type: Date,
         },
         end_time: {
             type: Date,
         },        
-        isBlock: {
-            type: Boolean,
-            default: false,
-        },
         score: {
             type: Number,
             default: 0,
-        },
-        status: {
-            type: String,
-            enum: ['in-progress', 'completed', 'abandoned'], 
-            default: 'in-progress',
         },
     }],
 }, {

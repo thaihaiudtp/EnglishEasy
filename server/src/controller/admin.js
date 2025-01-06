@@ -1,7 +1,8 @@
-
+const User = require('../model/user.model');
 const Class = require('../model/class.model');
 const Test = require('../model/test.model');
 const Question = require('../model/question.model');
+const { now } = require('mongoose');
 class AdminController {
     async CreateClass(req, res){
         console.log("Request received at CreateClass");
@@ -109,10 +110,62 @@ class AdminController {
         const {test_slug} = req.params;
         const {status_test} = req.body;
         try {
-            await Test.updateOne({slug: test_slug}, {new: true});
+            await Test.updateOne({slug: test_slug},{$set: {status_test: status_test}}, {new: true});
             return res.status(200).json({
                 success: true,
                 message: "Test Updated Successfully",
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    }
+    async AddTestToClass(req, res){
+        const{slug} = req.params;
+        const {test_id} = req.body;
+        const classData = await Class.findOne({slug: slug});
+        //const test = await Test.findById(test_id);
+        if(classData.tests.includes(test_id)){
+            return res.status(400).json({
+                success: false,
+                message: "Test already added to class"
+            })
+        }
+        try {
+            classData.tests.push(test_id);
+            await classData.save();
+            return res.status(200).json({
+                success: true,
+                message: "Test added to class successfully",
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    }
+    async addTestToUser(req, res){
+        const {email} = req.body;
+        const {test_id} = req.body;
+        const user = await User.findOne({email: email});
+        const test = await Test.findById(test_id);
+        const testExists = user.tests.some((t) => t.test.toString() === test_id);
+        try {
+            if (testExists) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Test already added to user",
+                });
+            }
+
+            user.tests.push({ test: test_id, total_questions: test.total_questions});
+            await user.save();
+            return res.status(200).json({
+                success: true,
+                message: "Test added to class successfully",
             })
         } catch (error) {
             return res.status(500).json({
