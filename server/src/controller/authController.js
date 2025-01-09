@@ -44,6 +44,12 @@ class AuthController{
                     message: 'Email not found',
                 })
             }
+            if(existEmail.role === 3){
+                return res.status(401).json({
+                    success: false,
+                    message: 'You are not authorized to login',
+                })
+            }
             const isMatchUser = bcrypt.compareSync(password, existEmail.password);
             if(!isMatchUser){
                 return res.status(401).json({
