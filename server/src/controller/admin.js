@@ -174,6 +174,26 @@ class AdminController {
             })
         }
     }
+    async showAllUser(req, res){
+        try {
+            const allUser = await User.find();
+            if(!allUser){
+                return res.status(404).json({
+                    success: false,
+                    message: "No user found"
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                data: allUser
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    }
 }
 
 module.exports = new AdminController
