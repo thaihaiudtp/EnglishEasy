@@ -176,7 +176,7 @@ class AdminController {
     }
     async showAllUser(req, res){
         try {
-            const allUser = await User.find();
+            const allUser = await User.find({role: {$in:[0,3]}});
             if(!allUser){
                 return res.status(404).json({
                     success: false,
