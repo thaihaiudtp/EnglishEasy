@@ -2,7 +2,6 @@ const User = require('../model/user.model');
 const Class = require('../model/class.model');
 const Test = require('../model/test.model');
 const Question = require('../model/question.model');
-const { now } = require('mongoose');
 class AdminController {
     async CreateClass(req, res){
         console.log("Request received at CreateClass");

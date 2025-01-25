@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AdminController = require('../controller/admin');
+const UserController = require('../controller/student');
 const {verifyTokenAdmin} = require('../middleware/verifyToken');
 router.get('/show-users', verifyTokenAdmin, AdminController.showAllUser);
 router.post('/create-class', verifyTokenAdmin, AdminController.CreateClass);
@@ -9,5 +10,5 @@ router.post(`/:test_slug/create-question`, verifyTokenAdmin, AdminController.Cre
 router.post(`/:slug/add-test`, verifyTokenAdmin, AdminController.AddTestToClass);
 router.post(`/add-test-student`, verifyTokenAdmin, AdminController.addTestToUser);
 router.put(`/:test_slug/active-test`, verifyTokenAdmin, AdminController.UpdateTesr);
-
+router.get('/all-class', verifyTokenAdmin,UserController.ShowClass);
 module.exports = router;
