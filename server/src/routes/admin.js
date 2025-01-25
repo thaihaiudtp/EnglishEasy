@@ -4,6 +4,7 @@ const AdminController = require('../controller/admin');
 const UserController = require('../controller/student');
 const {verifyTokenAdmin} = require('../middleware/verifyToken');
 router.get('/show-users', verifyTokenAdmin, AdminController.showAllUser);
+router.get('/show-tests', verifyTokenAdmin, AdminController.showAllTest);
 router.post('/create-class', verifyTokenAdmin, AdminController.CreateClass);
 router.post('/create-test', verifyTokenAdmin, AdminController.CreateTest);
 router.post(`/:test_slug/create-question`, verifyTokenAdmin, AdminController.CreateQuestion);
