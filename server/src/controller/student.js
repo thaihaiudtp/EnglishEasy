@@ -2,8 +2,7 @@ const Class = require('../model/class.model');
 const User = require('../model/user.model');
 const Test = require('../model/test.model');
 const Question = require('../model/question.model');
-const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Types; 
+const mongoose = require('mongoose'); 
 class UserController {
     async ShowClass(req, res){
         try {
