@@ -64,7 +64,7 @@ class AdminController {
         }
     }
     async CreateQuestion(req, res){
-        const {test_slug} = req.params;
+        const {testId} = req.params;
         const {question_name, answer_a, answer_b ,answer_c, answer_d, correct_answer} = req.body;
         const admin = req.user;
         if(!question_name || !answer_a || !answer_b || !answer_c || !answer_d || !correct_answer){
@@ -74,7 +74,7 @@ class AdminController {
             })
         }
         try {
-            const test = await Test.findOne({slug: test_slug});
+            const test = await Test.findOne({_id: testId});
             if(!test){
                 return res.status(404).json({
                     success: false,
@@ -106,10 +106,10 @@ class AdminController {
         }
     }
     async UpdateTesr(req, res){
-        const {test_slug} = req.params;
+        const {testId} = req.params;
         const {status_test} = req.body;
         try {
-            await Test.updateOne({slug: test_slug},{$set: {status_test: status_test}}, {new: true});
+            await Test.findOneAndUpdate({_id: testId},{$set: {status_test: status_test}}, {new: true});
             return res.status(200).json({
                 success: true,
                 message: "Test Updated Successfully",
@@ -122,18 +122,17 @@ class AdminController {
         }
     }
     async AddTestToClass(req, res){
-        const{slug} = req.params;
-        const {test_id} = req.body;
-        const classData = await Class.findOne({slug: slug});
-        //const test = await Test.findById(test_id);
-        if(classData.tests.includes(test_id)){
+        const {testId} = req.params;
+        const {class_id} = req.body;
+        const classData = await Class.findOne({_id: class_id});
+        if(classData.tests.includes(testId)){
             return res.status(400).json({
                 success: false,
                 message: "Test already added to class"
             })
         }
         try {
-            classData.tests.push(test_id);
+            classData.tests.push(testId);
             await classData.save();
             return res.status(200).json({
                 success: true,
@@ -205,6 +204,31 @@ class AdminController {
             return res.status(200).json({
                 success: true,
                 data: tests
+            })
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    }
+    async showOneTest(req, res){
+        const {testId} = req.params;
+        try {
+            const data = await Test.findOne({_id: testId}).populate({
+                path: 'question_test.question',
+                model: 'Question',
+            })
+            if(!data){
+                return res.status(404).json({
+                    success: false,
+                    message: "No test found"
+                })
+            }
+            return res.status(200).json({
+                success: true,
+                message: 'ok',
+                data: data
             })
         } catch (error) {
             return res.status(500).json({
