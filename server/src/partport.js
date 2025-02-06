@@ -1,7 +1,8 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('./model/user.model');
-const {genAccessToken} = require('./util/genAccessToken')
+const {genAccessToken} = require('./util/genAccessToken');
+require('dotenv').config();
 passport.serializeUser((user, done) => {
     done(null, user.id);
   });
@@ -15,8 +16,8 @@ passport.deserializeUser((id, done) => {
   
   passport.use(
     new GoogleStrategy({
-        clientID: "REMOVED",
-        clientSecret: "REMOVED",
+        clientID: process.env.clientID,
+        clientSecret: process.env.clientSecret,
         callbackURL: 'http://localhost:7021/auth/google/callback'
     }, async (accessToken, refreshToken, profile, done) => {  
         if (!profile) {
