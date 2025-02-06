@@ -1,7 +1,8 @@
 const User = require('../model/user.model');
 const {validationResult} = require('express-validator');
 const bcrypt = require('bcrypt');
-const {genAccessToken} = require('../util/genAccessToken')
+const {jwtDecode} = require('jwt-decode');
+const {genAccessToken} = require('../util/genAccessToken');
 class AuthController{
     async Register(req, res) {
         const errors = validationResult(req);
@@ -71,6 +72,29 @@ class AuthController{
                 message: error.message
             });
         }
+    }
+    async authGoogle(req, res){
+        const token = req.cookies.accessToken;
+        if(!token){
+            return res.status(401).json({
+                success: false,
+                message: 'You are not authorized to access this route',
+            })
+        }
+        return res.status(200).json({
+            success: true,
+            message: 'You are authorized to access this route',
+            token: token,
+            role: '0'
+        })
+    }
+    logout(req, res){
+        res.clearCookie("accessToken");
+    
+        return res.status(200).json({
+            success: true,
+            message: "Logged out",
+        });
     }
 }   
 

@@ -237,6 +237,27 @@ class AdminController {
             })
         }
     }
+    async ShowClass(req, res){
+        try {
+            const {testId} = req.params;
+            const AllClass = await Class.find();
+            const Classes = AllClass.filter(classItem => !classItem.tests.includes(testId));
+            if(!Classes){
+                return res.status(404).json({
+                    message: "No Class Found"
+                });
+            }
+            return res.status(200).json({
+                success: true,
+                data: Classes,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                success: false,
+                message: error.message
+            })
+        }
+    }
 }
 
 module.exports = new AdminController

@@ -12,5 +12,5 @@ router.post(`/:testId/create-question`, verifyTokenAdmin, AdminController.Create
 router.post(`/:testId/add-test`, verifyTokenAdmin, AdminController.AddTestToClass);
 router.post(`/add-test-student`, verifyTokenAdmin, AdminController.addTestToUser);
 router.put(`/:testId/active-test`, verifyTokenAdmin, AdminController.UpdateTesr);
-router.get('/all-class', verifyTokenAdmin,UserController.ShowClass);
+router.get('/all-class/:testId', verifyTokenAdmin, AdminController.ShowClass);
 module.exports = router;
